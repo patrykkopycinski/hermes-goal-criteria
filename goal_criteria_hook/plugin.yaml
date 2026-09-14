@@ -1,0 +1,6 @@
+name: goal-criteria-hook
+version: "1.0.0"
+description: "On every turn of an active /goal that still has zero acceptance criteria, inject a one-time user-message context directing the agent to attach evidence-phrased criteria via the goal_criteria tool. Silent once criteria exist."
+author: patryk
+provides_hooks:
+  - pre_llm_call
