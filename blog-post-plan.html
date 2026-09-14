@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog Post Plan — goal-criteria</title>
+<style>
+  body{font-family:-apple-system,'Segoe UI',sans-serif;color:var(--foreground);margin:0;padding:32px;line-height:1.55}
+  h1{font-size:1.6rem;color:var(--accent)} h2{font-size:1.2rem;margin-top:2em;border-bottom:1px solid var(--border);padding-bottom:4px}
+  code{background:var(--card);padding:1px 5px;border-radius:4px;font-size:.9em}
+  .callout{border-left:3px solid var(--accent);background:var(--card);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  table{border-collapse:collapse;width:100%;font-size:.92em}
+  th,td{border:1px solid var(--border);padding:6px 10px;text-align:left}
+  th{background:var(--card)}
+  .meta{color:var(--muted-foreground);font-size:.9em}
+</style>
+</head>
+<body>
+<h1>Blog post plan: "Make your agent's goals fail loudly — the goal-criteria plugin"</h1>
+<p class="meta">Companion deliverable to github.com/patrykkopycinski/hermes-goal-criteria · drafted 2026-09-14 · publish target: personal blog + Hermes Discord #plugins-skills-and-skins</p>
+
+<h2>1. Thesis</h2>
+<p>Agent goal loops complete "on vibes" when criteria are missing or written from a <em>summary</em> of the plan. The fix is structural, not prompt-level: derive the completion bar from the <strong>plan artifact itself</strong>, and make deferral a budgeted, evidenced exception rather than a free outcome.</p>
+
+<h2>2. Narrative arc (findings → decision → impact)</h2>
+<table>
+<tr><th>§</th><th>Content</th><th>Evidence to cite</th></tr>
+<tr><td>1. The incident</td><td>Real transcript: "take the plan.md and execute it" — goal completed green while 4 of 7 plan sections were silently unfinished; criteria (5) had been written from a summary, not the plan</td><td>v3 session log 2026-09-14; plan.md 7 sections vs 5 criteria covering 3 sections</td></tr>
+<tr><td>2. Root cause chain</td><td>(a) judge reads criteria only — necessary≠sufficient gap; (b) summary drift; (c) "deferred" was free</td><td>Three failure mechanisms, each with a one-line fix mapping</td></tr>
+<tr><td>3. The decision process</td><td>Why <code>attach_plan</code> lives in the plugin (not the judge prompt): the artifact is read at attach time, verifiable, and refusable; why deferral requires a <em>named external blocker</em>; why budget=2; why the hook nudges but never auto-writes</td><td>Plugin source comments; goal-criteria-assist skill rules</td></tr>
+<tr><td>4. How it changed the workflow</td><td>Before: goal → vibes-judge → partial ship discovered in review. After: goal → attach_plan → per-section disposition contract → judge has an artifact-anchored bar; "deferred" now costs a named blocker + retry condition</td><td>Side-by-side flow diagram (HTML/SVG interactive walkthrough)</td></tr>
+<tr><td>5. Benchmarks</td><td>See §3 below — measured, honest, small-N disclosed</td><td>Tables with raw N</td></tr>
+<tr><td>6. Limitations, stated plainly</td><td>Header-shape coupling (Phase/Track/Step/Milestone/Part only); judge must still honor disposition wording (first real-world validation pending); 2-week catalog pin maturity means it's repo-first, catalog-later</td><td>—</td></tr>
+</table>
+
+<h2>3. Benchmarks — what we can claim honestly today, and what needs measurement</h2>
+<div class="callout"><strong>Rule:</strong> no benchmark without raw N and the failure mode it measures. Two are measured already; two need a small measurement session before publishing.</div>
+<table>
+<tr><th>Benchmark</th><th>Status</th><th>Number</th></tr>
+<tr><td>Section coverage of the completion bar (same real plan)</td><td>✅ measured</td><td>summary-derived criteria covered <strong>3/7</strong> plan sections; <code>attach_plan</code> covers <strong>7/7</strong> + 2 cross-cutting (deferral budget, test coverage) = 9 criteria</td></tr>
+<tr><td>Silent-partial-execution detection</td><td>✅ measured by construction</td><td>4/7 sections unfinished would have failed 4 explicit criteria; under the old criteria set it failed <strong>0</strong></td></tr>
+<tr><td>Deferral honesty</td><td>🔬 measure before publish</td><td>Run 3 plan-execution goals with seeded blockers; count deferrals that carry a named blocker + retry condition. Target: 100% of accepted deferrals, 0 silent skips</td></tr>
+<tr><td>False-positive rate (over-strictness)</td><td>🔬 measure before publish</td><td>Run 3 goals whose plans are fully executable; verify attach_plan doesn't force spurious deferrals or block legitimate completion. Target: 0 false blocks</td></tr>
+</table>
+<p class="meta">Optional bigger-N claim (only if you want it): replay the last 20 of your own completed /goal loops, retro-attach plans where they existed, and count how many "done" outcomes would have surfaced unfinished sections. Highest-value number in the post; ~1 evening of work.</p>
+
+<h2>4. Interactive explainer (per standing deliverable style)</h2>
+<p>One HTML artifact embedded in the post: stage walkthrough of the goal loop (goal → attach_plan → execution → disposition table → judge), clickable depth into the three failure mechanisms and their fixes, dark-mode, Elastic-styled.</p>
+
+<h2>5. Production checklist</h2>
+<ul>
+<li>Run the two 🔬 measurement sessions (≈30 min each) → fill §3 table</li>
+<li>Build the interactive explainer</li>
+<li>Draft post as HTML (dark, Elastic-styled) → cross-link repo README</li>
+<li>Publish after catalog entry merges (≥2 weeks from 2026-09-14, i.e. on/after 2026-09-28) so the post can link an installable plugin — <em>or</em> publish earlier with manual-install instructions</li>
+</ul>
+</body>
+</html>
